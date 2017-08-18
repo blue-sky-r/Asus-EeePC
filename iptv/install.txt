@@ -1,0 +1,64 @@
+1) make bootable USB/SD media witgh LUBUNTU (unetbootin)
+
+2) boot:
+  - attach created media to EEE-PC USB
+  - power-on
+  - press ESC to get boot-menu
+  - select to boot USB/SD storage 'USB:Mass Storage Device'
+  - select 'Install'
+  - on 'Undefined video mode number: 314' press ENTER, ENTER
+
+3) install lubuntu:
+  - select language, country, keyboard layout based on your preferences
+  - wait untim intalled loads comp[onents (cca 2 min)
+  - configure the network
+  - hostname, user, do not encrypt home directory
+  - Partition disks:
+    - NO unmount partitions in use
+    - manual partitioning method
+    - select SCSI2 (0,0,0) sda - ATA Siliconmotion SM
+    - create new empty partition
+    - select SCSI2 FREE SPACE
+    - create a new partition
+    - leave maximum size
+    - type primary
+    - use as Ext2 file system
+    - yes, format it
+    - Mount point: / (root filesystem)
+    - Mount options: noatime, nodiratime
+    - Label: LUBUNTU
+    - Reserved blocks: 5%
+    - Typical usage: standard
+    - Bootable flag: on
+    - Done stting up the partition
+  - Finish partitioning and write changes to disk
+  - NO to select swap space and 'Do you want to return to the partitioning menu'
+  - YES Write the changes to disk
+
+4) select and install sw:
+   - NO automatic updates
+   - select Lubuntu minimal installation only
+   - YES install GRUB to MBR
+   - YES set clock to UTC
+   - reboot
+
+5) after installation:
+   - transfer bin dir to eee (make executable *.sh)
+   - cleanup: sudo bin/cleanup.sh
+   - wifi: sudo bin/wifi.sh 'ssid' 'password'
+   - switch-on wifi (Fn+F2),
+   - reboot (service networking restart nepomohlo)
+   - install: sudo bin/install.sh
+   - sudo bin/autologin.sh tv
+   - copy tv.tgz, unpack
+   - sudo bin/autostart-tv.sh
+   - sudo bin/nodialog-shutdown.sh
+   - sudo cp 85-ac-adapter.rules /etc/udev/rules.d/
+
+6) RC
+   - 
+
+
+
+
+
