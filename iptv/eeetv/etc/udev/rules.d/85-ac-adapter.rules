@@ -1,0 +1,11 @@
+#  AC-ADAPTER events
+#
+# sudo udevadm info --path=/devices/LNXSYSTM:00/device:00/PNP0A08:00/ACPI0003:00/power_supply/AC0
+# P: /devices/LNXSYSTM:00/device:00/PNP0A08:00/ACPI0003:00/power_supply/AC0
+# E: DEVPATH=/devices/LNXSYSTM:00/device:00/PNP0A08:00/ACPI0003:00/power_supply/AC0
+# E: POWER_SUPPLY_NAME=AC0
+# E: POWER_SUPPLY_ONLINE=1
+# E: SUBSYSTEM=power_supply
+
+SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_NAME}=="AC0", ENV{POWER_SUPPLY_ONLINE}=="0", RUN+="/sbin/shutdown -h now 'AC Power lost'"
+#SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_NAME}=="AC0", ENV{POWER_SUPPLY_ONLINE}=="1", RUN+="/usr/bin/logger 'ac-adapter ON'"
