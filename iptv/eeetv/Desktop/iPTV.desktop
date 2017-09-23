@@ -1,0 +1,16 @@
+[Desktop Entry]
+Categories=AudioVideo;Audio;Video;Player;TV;
+Comment=iP-TV Player
+Comment[en_US]=iP-TV Player
+Exec=/home/tv/tv.sh
+GenericName=Multimedia player
+GenericName[en_US]=Multimedia player
+Icon=preferences-desktop-display
+MimeType=
+Name=iPTV
+Path=/home/tv
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-Desktop-File-Install-Version=0.22
