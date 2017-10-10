@@ -1,0 +1,40 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          cpu fsb
+# Required-Start:    $all
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:
+### END INIT INFO
+
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+
+EEE=/sys/devices/platform/eeepc
+CPU=cpufv
+CPU_DIS=${CPU}_disabled
+CPU_AVAIL=available_$CPU
+
+#. /lib/init/vars.sh
+#. /lib/lsb/init-functions
+
+case "$1" in
+    start|fast)
+    	echo 0 > $EEE/$CPU_DIS
+    	echo 0 > $EEE/$CPU
+        ;;
+    stop|normal)
+    	echo 1 > $EEE/$CPU
+    	#echo 1 > $EEE/$CPU_DIS
+        ;;
+    status)
+    	for i in $CPU_AVAIL $CPU_DIS $CPU
+    	do
+    		echo "$i: $(cat $EEE/$i)"
+    	done
+    	;;
+    *)
+        echo "Usage: $0 start|fast|stop|normal|status" >&2
+        exit 3
+        ;;
+esac
