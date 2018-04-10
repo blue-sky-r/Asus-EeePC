@@ -1,0 +1,16 @@
+[Desktop Entry]
+Categories=AudioVideo;Audio;Video;Player;TV;
+Comment=NAS Archive
+Comment[en_US]=NAS Archive
+Exec=lxterm +fullscreen -e /home/tv/bin/nas.sh
+GenericName=Multimedia player
+GenericName[en_US]=Multimedia player
+Icon=preferences-desktop-display
+MimeType=
+Name=NAS
+Path=/home/tv
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-Desktop-File-Install-Version=0.22
