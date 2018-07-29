@@ -4,16 +4,16 @@
 
 # system packages
 #
-PKG="software-properties-common python3-software-properties joe mc dropbear"
+PKG="software-properties-common python3-software-properties lirc joe mc dropbear"
 
 # additional repositories
 #
 #PPA="ppa:rvm/smplayer"
-PPA="ppa:mc3man/mpv-tests"
+PPA="ppa:mc3man/trusty-media ppa:mc3man/mpv-tests"
 
 # multimedia packages
 #
-MM="mpv"
+MM="ffmpeg mpv"
 
 # do not ask confirmation
 #
