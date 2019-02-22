@@ -4,7 +4,7 @@
 
 # system packages
 #
-PKG="software-properties-common python3-software-properties lirc joe mc dropbear"
+PKG="software-properties-common python3-software-properties lirc joe mc dropbear mini-httpd socat"
 
 # additional repositories
 #
