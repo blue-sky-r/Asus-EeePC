@@ -1,0 +1,141 @@
+<html>
+<head>
+	<title>EeeTV</title>
+    <link rel="stylesheet" type="text/css" href="/css/rc.css">
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <!-- iPad 1,3 768 × 928 (1536 x 1856 pixels) In portrait on iOS 5 -->
+    <meta name="viewport" content="width=768, initial-scale=1.42, minimum-scale=1.42, maximum-scale=1.42">
+    <script>
+        $(document).ready(function(){
+            // select default channel
+            $("button[name=markíza]").addClass("buttondown");
+            // on-click
+            $("button").click(function() {
+                // name
+                var name = $(this).prop("name");
+                // single button
+                if ($(this).hasClass("single")) {
+                    // simulate press
+                    $(this).addClass("buttondown");
+                    // 2s delayed release
+                    setTimeout(function() { $(this).removeClass("buttondown");}.bind(this), 2000);
+                    // show-text has parameter
+                    if (name == "show-text") {
+                        // text parameter
+                        var text = $("#text").val();
+                        $.get(  "/cgi-bin/tv.cgi",
+                                { "show-text": text },
+                                function(data, status) {
+                                    if (data) {
+                                        alert(data);
+                                    }
+                                },
+                                "text"
+                        )
+                    // other commands have no parameter
+                    } else {
+                        $.get(  "/cgi-bin/tv.cgi",
+                                name,
+                                function(data, status) {
+                                    if (data) {
+                                        alert(data);
+                                    }
+                                },
+                                "text"
+                        )
+                    }
+                // channel-buttons have radio class
+                } else if ($(this).hasClass("radio")) {
+                    // eject old pressed button
+                    $(".buttondown").removeClass("buttondown");
+                    // simulate press
+                    $(this).addClass("buttondown");
+                    // channel switching
+                    $.get(  "/cgi-bin/tv.cgi",
+                            {"channel": name},
+                            function (data, status) {
+                                if (data) {
+                                    alert(data);
+                                }
+                            },
+                            "text"
+                    )
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+
+<h3>EeeTV WiFi TV Diaľkový Ovládač</h3>
+    <h4><span>sloveské kanály</span></h4>
+        <button class="button radio" name="dajto"></button>
+        <button class="button radio" name="doma"></button>
+        <button class="button radio" name="markíza"></button>
+        <br>
+        <button class="button radio" name="joj"></button>
+        <button class="button radio" name="joj+"></button>
+        <button class="button radio" name="joj family"></button>
+        <button class="button radio" name="joj cinema"></button>
+        <br>
+        <button class="button radio" name="stv1"></button>
+        <button class="button radio" name="stv2"></button>
+        <button class="button radio" name="ta3"></button>
+        <button class="button radio" name="tv hronka"></button>
+        <br>
+        <button class="button radio" name="wau"></button>
+        <button class="button radio" name="lux"></button>
+        <button class="button radio" name="osem"></button>
+
+    <h4><span>české kanály</span></h4>
+
+        <button class="button radio" name="ČT1"></button>
+        <button class="button radio" name="ČT2"></button>
+        <br>
+        <button class="button radio" name="amc"></button>
+        <button class="button radio" name="filmbox"></button>
+        <button class="button radio" name="film+"></button>
+        <button class="button radio" name="cs film"></button>
+        <br>
+        <button class="button radio" name="spektrum" disabled></button>
+        <button class="button radio" name="via history"></button>
+        <button class="button radio" name="discovery"></button>
+        <button class="button radio" name="science"></button>
+        <br>
+        <button class="button radio" name="prima"></button>
+        <button class="button radio" name="prima cool"></button>
+        <button class="button radio" name="prima zoom" disabled></button>
+        <button class="button radio" name="prima max" disabled></button>
+        <br>
+        <button class="button radio" name="nova"></button>
+        <button class="button radio" name="nova action"></button>
+        <button class="button radio" name="nova gold"></button>
+        <button class="button radio" name="nova cinema"></button>
+        <br>
+        <button class="button radio" name="kino svet"></button>
+        <button class="button radio" name="tv paprika" disabled></button>
+        <button class="button radio" name="fashion tv"></button>
+        <button class="button radio" name="elektrik tv"></button>
+        <br>
+        <button class="button radio" name="Očko gold"></button>
+        <button class="button radio" name="retro"></button>
+        <button class="button radio" name="vh 1" disabled></button>
+        <button class="button radio" name="monte carlo"></button>
+
+    <h4><span>zahraničné kanály</span></h4>
+
+        <button class="button radio" name="nasa tv"></button>
+
+    <h4><span>iné funkcie</span></h4>
+
+        <button class="button textbutton single" name="email">email</button>
+        <button class="button textbutton single" name="weather" disabled>počasie</button>
+        <button class="button textbutton single" name="clock">hodiny</button>
+        <button class="button textbutton single" name="info">info</button>
+
+    <h4><span>zobraz správu</span></h4>
+
+        <input type="text" size="40" id="text">
+        <button class="button textbutton single" name="show-text">zobraz</button>
+</body>
+</html>
