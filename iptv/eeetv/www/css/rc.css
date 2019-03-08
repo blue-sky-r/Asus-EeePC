@@ -1,0 +1,241 @@
+h1, h2, h3 {
+    width: 100%;
+    text-align: center;
+}
+
+h4 {
+    width: 100%;
+    text-align: center;
+    /* border-top: 0.5em solid lightgray; */
+    border-bottom: 0.5em solid lightgray;
+    line-height: 0.1em;
+    margin: 15px 0 5px;
+}
+
+h4 span {
+    background: white;
+    padding: 0 10px;
+}
+
+body {
+   width:528px;
+   /*margin:0 auto;*/
+}
+
+.button {
+    background-color: lightcyan;
+    background-repeat: no-repeat;
+    background-position: center center;
+    /*background-size: cover;*/
+    /*background-size: contain;*/
+    /*display: inline-block;*/
+    padding: 0px;
+    margin: 5px 4px;
+    width:120px;
+    height:100px;
+    outline: none;
+    border: 1px solid black;
+    border-radius: 15px;
+    box-shadow: 9px 9px darkgray;
+    transition: all 0.5s 0.1s;
+    -webkit-transition: all 0.5s 0.1s;
+}
+
+.textbutton {
+    font-size: 1.5em;
+    font-family: sans-serif;
+    font-weight: bold;
+    height: 45px;
+}
+
+.radio {
+    /* radio buttons tag */
+}
+
+.single {
+    /* single button tag */
+}
+
+/*.button:active*/
+/*.button:focus*/
+.buttondown {
+    background-color: greenyellow;
+    box-shadow: 3px 3px darkgray;
+    transform: translate(6px, 6px);
+    -webkit-transform: translate(6px, 6px);
+    transition: all 0.5s 0.1s;
+    -webkit-transition: all 0.5s 0.1s;
+    /*transform: scale(0.5,0.5)*/
+}
+
+button[disabled] {
+    opacity: 0.25;
+    cursor: not-allowed;
+}
+
+button[name="dajto"] {
+    background-image: url(/logo/dajto.png);
+}
+
+button[name="doma"] {
+    background-image: url(/logo/doma.png);
+}
+
+button[name="markíza"] {
+    background-image: url(/logo/markiza.png);
+}
+
+button[name="stv1"] {
+    background-image: url(/logo/STV1.png);
+}
+
+button[name="stv2"] {
+    background-image: url(/logo/STV2.png);
+}
+
+button[name="joj"] {
+    background-image: url(/logo/joj.png);
+}
+
+button[name="joj+"] {
+    background-image: url(/logo/joj_plus.png);
+}
+
+button[name="joj family"] {
+    background-image: url(/logo/joj_family.png);
+}
+
+button[name="joj cinema"] {
+    background-image: url(/logo/joj_cinema.png);
+}
+
+button[name="ta3"] {
+    background-image: url(/logo/TA3.png);
+}
+
+button[name="wau"] {
+    background-image: url(/logo/wau.png);
+}
+
+button[name="lux"] {
+    background-image: url(/logo/lux.png);
+}
+
+button[name="osem"] {
+    background-image: url(/logo/tv8.png);
+}
+
+button[name="tv hronka"] {
+    background-image: url(/logo/hronka.png);
+}
+
+button[name="ČT1"] {
+    background-image: url(/logo/ct1.png);
+}
+
+button[name="ČT2"] {
+    background-image: url(/logo/ct2.png);
+}
+
+button[name="amc"] {
+    background-image: url(/logo/amc.png);
+}
+
+button[name="cs film"] {
+    background-image: url(/logo/csfilm.png);
+}
+
+button[name="film+"] {
+    background-image: url(/logo/film-plus.png);
+}
+
+button[name=filmbox] {
+    background-image: url(/logo/filmbox.png);
+}
+
+button[name="kino svet"] {
+    background-image: url(/logo/kinosvet.png);
+}
+
+button[name="tv paprika"] {
+    background-image: url(/logo/paprika.png);
+}
+
+button[name="fashion tv"] {
+    background-image: url(/logo/fashion.png);
+}
+
+button[name="elektrik tv"] {
+    background-image: url(/logo/elektrik.png);
+}
+
+button[name="spektrum"] {
+    background-image: url(/logo/spektrum-hd.png);
+}
+
+button[name="via history"] {
+    background-image: url(/logo/viasat-history.png);
+}
+
+button[name="discovery"] {
+    background-image: url(/logo/discovery.png);
+}
+
+button[name="science"] {
+    background-image: url(/logo/discovery-science.png);
+}
+
+button[name="prima"] {
+    background-image: url(/logo/prima.png);
+}
+
+button[name="prima cool"] {
+    background-image: url(/logo/prima_cool.png);
+}
+
+button[name="prima zoom"] {
+    background-image: url(/logo/prima_zoom.png);
+}
+
+button[name="prima max"] {
+    background-image: url(/logo/prima_max.png);
+}
+
+button[name="nova"] {
+    background-image: url(/logo/nova.png);
+}
+
+button[name="nova action"] {
+    background-image: url(/logo/nova_action.png);
+}
+
+button[name="nova gold"] {
+    background-image: url(/logo/nova_gold.png);
+}
+
+button[name="nova cinema"] {
+    background-image: url(/logo/nova_cinema.png);
+}
+
+button[name="Očko gold"] {
+    background-image: url(/logo/ocko.png);
+}
+
+button[name="retro"] {
+    background-image: url(/logo/retro.png);
+}
+
+button[name="vh 1"] {
+    background-image: url(/logo/vh1.png);
+}
+
+button[name="monte carlo"] {
+    background-image: url(/logo/monte-carlo.png);
+}
+
+button[name="nasa tv"] {
+    background-image: url(/logo/nasatv.png);
+}
+
+
+
