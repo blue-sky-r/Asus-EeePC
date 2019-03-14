@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# debug output to caller
+# debug output to the caller (will show as pop-up alert)
 #
 DBG=
 
