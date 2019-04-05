@@ -13,7 +13,7 @@ h4 {
 }
 
 h4 span {
-    background: white;
+    background: lightgray;
     padding: 0 10px;
 }
 
@@ -30,7 +30,7 @@ body {
     /*background-size: contain;*/
     /*display: inline-block;*/
     padding: 0px;
-    margin: 5px 4px;
+    margin: 6px 4px;
     width:120px;
     height:100px;
     outline: none;
@@ -46,6 +46,14 @@ body {
     font-family: sans-serif;
     font-weight: bold;
     height: 45px;
+}
+
+.textbutton1em {
+    font-size: 1em;
+    font-family: sans-serif;
+    font-weight: bold;
+    height: 45px;
+    vertical-align: middle;
 }
 
 .radio {
@@ -73,6 +81,11 @@ button[disabled] {
     cursor: not-allowed;
 }
 
+/* follow the template */
+/* button[name="playlist_name"] { */
+/*    background-image: url(/logo/filename.png); */
+/* } */
+
 button[name="dajto"] {
     background-image: url(/logo/dajto.png);
 }
@@ -91,6 +104,14 @@ button[name="stv1"] {
 
 button[name="stv2"] {
     background-image: url(/logo/STV2.png);
+}
+
+button[name="stv3"] {
+    background-image: url(/logo/stv3.png);
+}
+
+button[name="stv4"] {
+    background-image: url(/logo/stv4.png);
 }
 
 button[name="joj"] {
@@ -217,8 +238,40 @@ button[name="nova cinema"] {
     background-image: url(/logo/nova_cinema.png);
 }
 
+button[name="cinemax"] {
+    background-image: url(/logo/cinemax.png);
+}
+
+button[name="cinemax 2"] {
+    background-image: url(/logo/cinemax2.png);
+}
+
+button[name="hbo"] {
+    background-image: url(/logo/hbo.png);
+}
+
+button[name="hbo 2"] {
+    background-image: url(/logo/hbo2.png);
+}
+
 button[name="Očko gold"] {
     background-image: url(/logo/ocko.png);
+}
+
+button[name="tv raj"] {
+    background-image: url(/logo/tvraj.png);
+}
+
+button[name="mall tv"] {
+    background-image: url(/logo/mall-tv.png);
+}
+
+button[name="info vojna"] {
+    background-image: url(/logo/infovojna.png);
+}
+
+button[name="radio info.vojna"] {
+    background-image: url(/logo/infovojna-radio.png);
 }
 
 button[name="retro"] {
@@ -237,5 +290,98 @@ button[name="nasa tv"] {
     background-image: url(/logo/nasatv.png);
 }
 
+button[name="rt news"] {
+    background-image: url(/logo/rt.png);
+}
 
+button[name="rt usa"] {
+    background-image: url(/logo/rt-usa.png);
+}
 
+button[name="rt uk"] {
+    background-image: url(/logo/rt-uk.png);
+}
+
+button[name="rt doc"] {
+    background-image: url(/logo/rt-doc.png);
+}
+
+button[name="ruptly"] {
+    background-image: url(/logo/ruptly.png);
+}
+
+button[name="zdravie ru"] {
+    background-image: url(/logo/zdravie.png);
+}
+
+button[name="da vinci ru"] {
+    background-image: url(/logo/da_vinci_learning.png);
+}
+
+button[name="nauka ru"] {
+    background-image: url(/logo/nauka.png);
+}
+
+button[name="pervyj 1"] {
+    background-image: url(/logo/pervyj_kanal.png);
+}
+
+button[name="rossia 1"] {
+    background-image: url(/logo/rossia_1.png);
+}
+
+button[name="rossia 24"] {
+    background-image: url(/logo/rossia_24.png);
+}
+
+button[name="kaleidoskop ru"] {
+    background-image: url(/logo/kaleidoskop-tv.png);
+}
+
+button[name="hit music"] {
+    background-image: url(/logo/hit-music.png);
+}
+
+button[name="fox news"] {
+    background-image: url(/logo/fox_news.png);
+}
+
+button[name="fox business"] {
+    background-image: url(/logo/fox-business.png);
+}
+
+button[name="cnbc"] {
+    background-image: url(/logo/cnbc.png);
+}
+
+button[name="msnbc"] {
+    background-image: url(/logo/msnbc.png);
+}
+
+button[name="pbs"] {
+    background-image: url(/logo/pbs.png);
+}
+
+button[name="syfy"] {
+    background-image: url(/logo/sci-fi.png);
+}
+
+button[name="e!"] {
+    background-image: url(/logo/e.png);
+}
+
+button[name="cnn"] {
+    background-image: url(/logo/cnn.png);
+}
+
+button[name="abc"] {
+    background-image: url(/logo/abc.png);
+}
+
+button[name="abc news"] {
+    background-image: url(/logo/abc-news.png);
+}
+
+button[name="sky news"] {
+    background-image: url(/logo/sky-news.png);
+}
