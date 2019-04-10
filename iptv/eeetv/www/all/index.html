@@ -1,0 +1,283 @@
+<html>
+<head>
+	<title>EeeTV</title>
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+        <!-- apple springboard icons -->
+		<link rel="apple-touch-icon" sizes="57x57" href="ico/uni-57.png" />
+		<link rel="apple-touch-icon" sizes="72x72" href="ico/uni-72.png" />
+		<link rel="apple-touch-icon" sizes="114x114" href="ico/uni-114.png" />
+		<link rel="apple-touch-icon" sizes="144x144" href="ico/uni-144.png" />
+        <!-- css -->
+        <link rel="stylesheet" type="text/css" href="/css/rc.css">
+    	<script src="/js/jquery-3.3.1.min.js"></script>
+        <!-- iPad 1,3 768 × 928 (1536 x 1856 pixels) In portrait on iOS 5 -->
+        <meta name="viewport" content="width=768, initial-scale=1.42, minimum-scale=1.42, maximum-scale=1.42">
+    <script>
+        $(document).ready(function(){
+            // select default channel
+            $("button[name=markíza]").addClass("buttondown");
+            // on-click
+            $("button").click(function() {
+                // name
+                var name = $(this).prop("name");
+                // single button
+                if ($(this).hasClass("single")) {
+                    // simulate press
+                    $(this).addClass("buttondown");
+                    // 2s delayed release
+                    setTimeout(function() { $(this).removeClass("buttondown");}.bind(this), 2000);
+                    // show-text has parameter
+                    if (name == "show-text") {
+                        // text parameter
+                        // ?show-text=this+is+text
+                        var text = $("#text").val();
+                        $.get(  "/cgi-bin/tv.cgi",
+                                { "show-text": text },
+                                function(data, status) {
+                                    if (data) {
+                                        alert(data);
+                                    }
+                                },
+                                "text"
+                        )
+                    // other commands have no parameter
+                    } else {
+                        // ?command
+                        $.get(  "/cgi-bin/tv.cgi",
+                                name,
+                                function(data, status) {
+                                    if (data) {
+                                        alert(data);
+                                    }
+                                },
+                                "text"
+                        )
+                    }
+                // channel-buttons have radio class
+                } else if ($(this).hasClass("radio")) {
+                    // eject old pressed button
+                    $(".buttondown").removeClass("buttondown");
+                    // simulate press
+                    $(this).addClass("buttondown");
+                    // channel switching
+                    // ?channel=name
+                    $.get(  "/cgi-bin/tv.cgi",
+                            {"channel": name},
+                            function (data, status) {
+                                if (data) {
+                                    alert(data);
+                                }
+                            },
+                            "text"
+                    )
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+
+<h3>EeeTV WiFi TV Diaľkový Ovládač</h3>
+    <h4><span>sloveské kanály</span></h4>
+        <button class="button radio" name="dajto"></button>
+        <button class="button radio" name="doma"></button>
+        <button class="button radio" name="markíza"></button>
+        <br>
+        <button class="button radio" name="joj"></button>
+        <button class="button radio" name="joj+"></button>
+        <button class="button radio" name="joj family"></button>
+        <button class="button radio" name="joj cinema"></button>
+        <br>
+        <button class="button radio" name="stv1"></button>
+        <button class="button radio" name="stv2"></button>
+        <button class="button radio" name="ta3"></button>
+        <button class="button radio" name="tv hronka"></button>
+        <br>
+        <!--
+        <button class="button radio" name="stv3"></button>
+        <button class="button radio" name="stv4"></button>
+        -->
+        <button class="button radio" name="wau"></button>
+        <button class="button radio" name="lux"></button>
+        <button class="button radio" name="osem"></button>
+
+    <h4><span>české kanály</span></h4>
+
+        <button class="button radio" name="ČT1"></button>
+        <button class="button radio" name="ČT2"></button>
+        <br>
+        <button class="button radio" name="amc"></button>
+        <button class="button radio" name="filmbox"></button>
+        <button class="button radio" name="film+"></button>
+        <button class="button radio" name="cs film"></button>
+        <br>
+        <button class="button radio" name="spektrum"></button>
+        <button class="button radio" name="via history"></button>
+        <button class="button radio" name="discovery"></button>
+        <button class="button radio" name="science"></button>
+        <br>
+        <button class="button radio" name="prima"></button>
+        <button class="button radio" name="prima cool"></button>
+        <button class="button radio" name="prima zoom"></button>
+        <button class="button radio" name="prima max"></button>
+        <br>
+        <button class="button radio" name="nova"></button>
+        <button class="button radio" name="nova action"></button>
+        <button class="button radio" name="nova gold"></button>
+        <button class="button radio" name="nova cinema"></button>
+        <br>
+        <button class="button radio" name="cinemax"></button>
+        <button class="button radio" name="cinemax 2"></button>
+        <button class="button radio" name="hbo"></button>
+        <button class="button radio" name="hbo 2"></button>
+        <br>
+        <button class="button radio" name="kino svet"></button>
+        <button class="button radio" name="tv paprika"></button>
+        <button class="button radio" name="fashion tv"></button>
+        <button class="button radio" name="elektrik tv"></button>
+        <br>
+        <button class="button radio" name="Očko gold"></button>
+        <button class="button radio" name="retro"></button>
+        <button class="button radio" name="vh 1"></button>
+        <button class="button radio" name="monte carlo"></button>
+	<br>
+        <button class="button radio" name="tv raj"></button>
+        <button class="button radio" name="e!"></button>
+        <button class="button radio" name="info vojna"></button>
+        <button class="button radio" name="radio info.vojna"></button>
+
+    <h4><span>zahraničné kanály</span></h4>
+
+        <button class="button radio" name="nasa tv"></button>
+        <button class="button radio" name="pbs"></button>
+        <button class="button radio" name="syfy"></button>
+        <button class="button radio" name="hit music"></button>
+    <br>
+        <button class="button radio" name="pervyj 1"></button>
+        <button class="button radio" name="rossia 1"></button>
+        <button class="button radio" name="rossia 24"></button>
+        <button class="button radio" name="ruptly"></button>
+    <br>
+        <button class="button radio" name="rt news"></button>
+        <button class="button radio" name="rt usa"></button>
+        <button class="button radio" name="rt uk"></button>
+        <button class="button radio" name="rt doc"></button>
+	<br>
+        <button class="button radio" name="da vinci ru"></button>
+        <button class="button radio" name="nauka ru"></button>
+        <button class="button radio" name="zdravie ru"></button>
+        <button class="button radio" name="kaleidoskop ru"></button>
+    <br>
+        <button class="button radio" name="fox news"></button>
+        <button class="button radio" name="fox business"></button>
+        <button class="button radio" name="cnn"></button>
+        <button class="button radio" name="cnbc"></button>
+    <br>
+        <button class="button radio" name="msnbc"></button>
+        <button class="button radio" name="sky news"></button>
+        <button class="button radio" name="abc"></button>
+        <button class="button radio" name="abc news"></button>
+
+    <h4><span>rádio</span></h4>
+        <button class="button textbutton1em radio" name="radio 80">Radio 80's</button>
+        <button class="button textbutton1em radio" name="chfi soft rock">Soft Rock</button>
+        <button class="button textbutton1em radio" name="q107">Q-107</button>
+        <button class="button textbutton1em radio" name="hity 80">Hity 80</button>
+        <br>
+        <button class="button textbutton1em radio" name="frekvence 1">Frekvence 1</button>
+        <button class="button textbutton1em radio" name="frekvence1 legendy">Frekvence1 Legendy</button>
+        <button class="button textbutton1em radio" name="radio1 retro">Radio1 Retro</button>
+        <button class="button textbutton1em radio" name="radio disco">Radio Disco</button>
+
+    <h4><span>kamery</span></h4>
+
+        <button class="button textbutton1em radio" name="Biela Púť - Jasná">Biela Púť Jasná</button>
+        <button class="button textbutton1em radio" name="Brhliská">Brhliská</button>
+        <button class="button textbutton1em radio" name="Chopok Východ">Chopok Východ</button>
+        <button class="button textbutton1em radio" name="Chopok Západ">Chopok Západ</button>
+        <button class="button textbutton1em radio" name="Priehyba - Jasná">Priehyba Jasná</button>
+        <button class="button textbutton1em radio" name="Jasná - Lúčky">Jasná Lúčky</button>
+        <button class="button textbutton1em radio" name="Hrebienok">Hrebienok</button>
+        <button class="button textbutton1em radio" name="Hrebienok - dóm">Hrebienok dóm</button>
+        <button class="button textbutton1em radio" name="Twinlinger - Jasná">Twinlinger Jasná</button>
+        <button class="button textbutton1em radio" name="Konský Grúň - Jasná">Konský Grúň Jasná</button>
+        <button class="button textbutton1em radio" name="Luková - Jasná">Luková Jasná</button>
+        <button class="button textbutton1em radio" name="Priehyba - Jasná">Priehyba Jasná</button>
+        <button class="button textbutton1em radio" name="Záhradky - Jasná">Záhradky Jasná</button>
+        <button class="button textbutton1em radio" name="Chopok - Kosodrevina">Chopok Kosodrevina</button>
+        <button class="button textbutton1em radio" name="Chopok - Srdiečko">Chopok Srdiečko</button>
+        <button class="button textbutton1em radio" name="Srdiečko - Jasná">Srdiečko Jasná</button>
+        <button class="button textbutton1em radio" name="Štrb.Pleso - mostík">Štrb.Pleso mostík</button>
+        <button class="button textbutton1em radio" name="Skalnaté Pleso 1">Skalnaté Pleso 1</button>
+        <button class="button textbutton1em radio" name="Skalnaté Pleso 2">Skalnaté Pleso 2</button>
+        <button class="button textbutton1em radio" name="Štrb.Pleso - Solisko">Štrb.Pleso Solisko</button>
+        <button class="button textbutton1em radio" name="Štrb.Pleso - dole">Štrb.Pleso dole</button>
+        <button class="button textbutton1em radio" name="Tat.Lomnica - Štart">Tat.Lomnica Štart</button>
+        <button class="button textbutton1em radio" name="Aquapark - Bešeňová">Aquapark Bešeňová</button>
+        <button class="button textbutton1em radio" name="niekde 39">niekde 39</button>
+        <button class="button textbutton1em radio" name="Chopok - free.zone">Chopok free.zone</button>
+        <button class="button textbutton1em radio" name="Záhradky - Jasná">Záhradky Jasná</button>
+        <button class="button textbutton1em radio" name="Lomnické sedlo">Lomnické sedlo</button>
+        <button class="button textbutton1em radio" name="Štrba Tatry">Štrba Tatry</button>
+        <button class="button textbutton1em radio" name="Štrb.Pleso - areál">Štrb.Pleso areál</button>
+        <button class="button textbutton1em radio" name="Štrb.Pleso - bež.areál">Štrb.Pleso bež.areál</button>
+        <button class="button textbutton1em radio" name="Štrb.Pleso - panoráma">Štrb.Pleso panoráma</button>
+        <button class="button textbutton1em radio" name="Štrb.Pleso - Móryho v.">Štrb.Pleso Móryho v.</button>
+        <button class="button textbutton1em radio" name="Štrb.Pleso - VysokéTatry">Štrb.Pleso VysokéTatry</button>
+        <button class="button textbutton1em radio" name="Štrb.Pleso - jazero">Štrb.Pleso jazero</button>
+        <button class="button textbutton1em radio" name="Štrb.Pleso - námestie">Štrb.Pleso námestie</button>
+        <button class="button textbutton1em radio" name="Štrb.Pleso - Nové ŠP">Štrb.Pleso Nové ŠP</button>
+        <button class="button textbutton1em radio" name="Štrb.Pleso - zjazdovky">Štrb.Pleso zjazdovky</button>
+        <button class="button textbutton1em radio" name="Malinô Brdo - 1209m">Malinô Brdo 1209m</button>
+        <button class="button textbutton1em radio" name="Malinô Brdo - Daria">Malinô Brdo Daria</button>
+        <button class="button textbutton1em radio" name="Malinô Brdo - Hrabovo">Malinô Brdo Hrabovo</button>
+        <button class="button textbutton1em radio" name="Malinô Brdo - Mini ZOO">Malinô Brdo Mini ZOO</button>
+        <button class="button textbutton1em radio" name="Malinô Brdo - vleky">Malinô Brdo vleky</button>
+        <button class="button textbutton1em radio" name="Donovaly - detský svet">Donovaly detský svet</button>
+        <button class="button textbutton1em radio" name="Donovaly - panoráma">Donovaly panoráma</button>
+        <button class="button textbutton1em radio" name="Donovaly - Funarena">Donovaly Funarena</button>
+        <button class="button textbutton1em radio" name="Donovaly - Funpark">Donovaly Funpark</button>
+        <button class="button textbutton1em radio" name="Donovaly - Habakuky">Donovaly Habakuky</button>
+        <button class="button textbutton1em radio" name="Donovaly - Nová Hoľa">Donovaly Nová Hoľa</button>
+        <button class="button textbutton1em radio" name="Donovaly - NvHl dojazd">Donovaly NvHl dojazd</button>
+        <button class="button textbutton1em radio" name="Donovaly - NvHl panor.">Donovaly NvHl panor.</button>
+        <button class="button textbutton1em radio" name="Donovaly - záhradište">Donovaly záhradište</button>
+        <button class="button textbutton1em radio" name="Donovaly">Donovaly</button>
+        <button class="button textbutton1em radio" name="Demänová">Demänová</button>
+        <button class="button textbutton1em radio" name="Krmítko LM">Krmítko LM</button>
+        <button class="button textbutton1em radio" name="Krmítko LM2">Krmítko LM2</button>
+        <button class="button textbutton1em radio" name="Krmítko LM3">Krmítko LM3</button>
+        <button class="button textbutton1em radio" name="Part. Ľupća">Part. Ľupća</button>
+        <button class="button textbutton1em radio" name="Pribilina">Pribilina</button>
+        <button class="button textbutton1em radio" name="Vavrišovo">Vavrišovo</button>
+        <button class="button textbutton1em radio" name="Kriváň - Permon">Kriváň Permon</button>
+        <button class="button textbutton1em radio" name="Podbanské vlek">Podbanské vlek</button>
+        <button class="button textbutton1em radio" name="Ski Gugel Mlynky">Ski Gugel Mlynky</button>
+        <button class="button textbutton1em radio" name="Vavrišovo II">Vavrišovo II</button>
+        <button class="button textbutton1em radio" name="Vyšná Boca">Vyšná Boca</button>
+        <button class="button textbutton1em radio" name="Lomnický Štít">Lomnický Štít</button>
+        <button class="button textbutton1em radio" name="Praha Hl.nádraží">Praha Hl.nádraží</button>
+        <button class="button textbutton1em radio" name="NY TimesSquare">NY TimesSquare</button>
+        <button class="button textbutton1em radio" name="Algonquin Park">Algonquin Park</button>
+        <button class="button textbutton1em radio" name="Toronto CNT.West">Toronto CNT.West</button>
+        <button class="button textbutton1em radio" name="Toronto CNT.East">Toronto CNT.East</button>
+        <button class="button textbutton1em radio" name="Niagara Falls">Niagara Falls</button>
+
+    <h4><span>prehľad</span></h4>
+
+        <button class="button textbutton single" name="" disabled>Tatry</button>
+
+
+    <h4><span>iné funkcie</span></h4>
+
+        <button class="button textbutton single" name="email">email</button>
+        <button class="button textbutton single" name="weather" disabled>počasie</button>
+        <button class="button textbutton single" name="clock">hodiny</button>
+        <button class="button textbutton single" name="info">info</button>
+
+    <h4><span>zobraz správu</span></h4>
+
+        <input type="text" size="40" id="text">
+        <button class="button textbutton single" name="show-text">zobraz</button>
+</body>
+</html>
