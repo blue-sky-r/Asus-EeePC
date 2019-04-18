@@ -76,14 +76,11 @@ case $CMD in
     # show-text=test msg with ass control codes
     show-text-ass-cc)
                 # get control code for disabling escaping ass sequences
-    	        #escdis=$( echo '{ "command": ["get_property", "osd-ass-cc/0"] }' | socat - /tmp/mpvsocket | awk -F'"' '/data/ {print $4}' )
-    	        #
-    	        #escdis='\xfd{\\fs10}'
-                #r=$( echo "show-text \"Norm:${escdis}${show_text_ass_cc}\"" | socat - /tmp/mpvsocket )
-    	        esc0='\xfd'
-                r=$( echo "show-text \"${esc0}${show_text_ass_cc}\" 20000"| socat - /tmp/mpvsocket )
-                #r=$( echo "show-text \"${escdis}${show_text_ass_cc//\\/\\\\}\"" | socat - /tmp/mpvsocket )
-                #r=$( echo "{\"command\": [\"show_text\", \"${esc0}${show_text_ass_cc}\"] }" | socat - /tmp/mpvsocket )
+    	        esc0=$( echo '{ "command": ["get_property", "osd-ass-cc/0"] }' | socat - /tmp/mpvsocket | awk -F'"' '/data/ {printf "%s",$4}' )
+    	        #esc0='\xfd'
+                # execute show-text and esacpe double-quotes in text
+                r=$( echo "show-text \"${esc0}${show_text_ass_cc//\"/\\\"}\" ${time}"| socat - /tmp/mpvsocket )
+                #r=$( echo "{ \"command\": [\"show-text\", \"${esc0}${show_text_ass_cc//\"/\\\"}\", ${time}] }" | socat - /tmp/mpvsocket )
                 ;;
 
     # clock
@@ -109,7 +106,13 @@ case $CMD in
                 ;;
 
     # get program
-    get-epg)    json=$( ./epg.py -title "${channel}" -offset "${offset}" -bar "${barsize}" -epg )
+    get-epg)    json=$( ./epg.py -title "${channel}" -offset ${offset} -bar ${barsize} -epg )
+                # output
+                echo "$json"
+                ;;
+
+    # get program
+    get-epg-list)   json=$( ./epg.py -title "${channel}" -offset ${offset} -epg-list ${get_epg_list} )
                 # output
                 echo "$json"
                 ;;
