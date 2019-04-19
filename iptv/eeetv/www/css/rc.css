@@ -242,6 +242,18 @@ button[name="Cinemax"] {
     background-image: url(/logo/cinemax.png);
 }
 
+button[name="TV Barrandov"] {
+    background-image: url(/logo/barrandov.png);
+}
+
+button[name="Barrandov+"] {
+    background-image: url(/logo/barrandov-plus.png);
+}
+
+button[name="Kino Barrandov"] {
+    background-image: url(/logo/barrandov-kino.png);
+}
+
 button[name="Cinemax 2"] {
     background-image: url(/logo/cinemax2.png);
 }
@@ -384,4 +396,20 @@ button[name="ABC News"] {
 
 button[name="Sky News"] {
     background-image: url(/logo/sky-news.png);
+}
+
+button[name="Sky News UK"] {
+    background-image: url(/logo/sky-news-uk.png);
+}
+
+button[name="Sky News US"] {
+    background-image: url(/logo/sky-news-usa.png);
+}
+
+button[name="CBC news"] {
+    background-image: url(/logo/cbc-news.png);
+}
+
+button[name="InfoWars.com"] {
+    background-image: url(/logo/infowars-com.png);
 }
