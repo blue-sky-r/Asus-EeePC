@@ -14,15 +14,15 @@ import sys
 import json
 import os
 
-__VERSION__ = "2019.04.17"
+__VERSION__ = "2019.04.18"
 
 __ABOUT__ = "= EPG cli module ver. %s for mpv wifi remote contoller =" % (__VERSION__)
 
-# absolute dir to parent dir
+# absolute dir to this file
 #
 ADIR = os.path.abspath(os.path.dirname(__file__))
 
-# rel. path from this script
+# relative path from this file
 #
 DBFILE = '%s/../tmp/epg.db' % ADIR
 
@@ -429,7 +429,11 @@ class DB:
         self.dbh.row_factory = sqlite3.Row
         self.cur = self.dbh.cursor()
 
-    def create(self):
+    def create(self, drop=False):
+        """ create EPG table (optional drop) """
+        if drop:
+            self.cur.execute('drop table EPG')
+        #
         sql = ( 'create table if not exists EPG '
                 '('
                 'tvid text, '
@@ -517,8 +521,13 @@ class DB:
         return [ dict(row) for row in r ]
 
     def transaction(self, action):
-        sql = '%s transaction' % action
-        self.cur.execute(sql)
+        """ https://stackoverflow.com/questions/9773200/python-sqlite3-cannot-commit-no-transaction-is-active """
+        if action.lower() == 'commit':
+            self.dbh.commit()
+        elif action.lower() == 'rollback':
+            self.dbh.rollback()
+        # begin transaction is automatic
+        return
 
     def close(self):
         self.cur.close()
@@ -528,7 +537,7 @@ class DB:
 
 class Epg:
 
-    def load(self, cfgname, dtime, channels):
+    def load(self, cfgname, dtime, channels, drop=False):
         """ load database from web """
         dbg(4, "Epg.load(cfgname=%s, dtime=%s, channels=%s)" % (cfgname, dtime, channels))
         # get data from www
@@ -536,12 +545,12 @@ class Epg:
 
         # store to the database
         local_db = DB(DBFILE)
-        local_db.create()
+        local_db.create(drop)
 
-        # local_db.transaction('begin')
+        local_db.transaction('begin')
         for epg in www.data_lst_dict(dtime, channels):
             local_db.put(epg)
-        # local_db.transaction('commit')
+        local_db.transaction('commit')
 
         # a = local_db.get('STV0', '201904101959')
         local_db.close()
@@ -611,14 +620,14 @@ class Epg:
 _usage_ = """
 %s
 
-%s [-dbg 10] [-tvid STV1] -load cfg-name
+%s [-dbg 10] [-drop] [-tvid STV1] -load cfg-name
 
-%s [-dbg 10] -title STV1 -dtime 201931122355 -offset -5 -bar 30 -epg
+%s [-dbg 10] -title STV1 [-dtime 201931122355] [-offset -5] [-bar 30] -epg
 
-%s [-dbg 10] -title STV1 -dtime 201931122355 -epg-list 10
+%s [-dbg 10] -title STV1 [-dtime 201931122355] -epg-list 10
 
 %s
-""" % (__ABOUT__, sys.argv[0], sys.argv[0], sys.argv[0], __FLOC__)
+""" % (__ABOUT__, sys.argv[0], sys.argv[0], sys.argv[0],  __FLOC__)
 
 def usage():
     """ show usage """
@@ -633,6 +642,7 @@ if __name__ == '__main__':
     yymd, hhmm = datetime.datetime.now().strftime('%Y%m%d %H%M').split()
     dtime, offset, barsize = '%s%s' % (yymd, hhmm), 0, 25
     tvid, channels = None, []
+    drop = False
 
     usage()
 
@@ -649,6 +659,11 @@ if __name__ == '__main__':
             dbg(5, "VAR: DEFAULTS yymd(%s) hhmm(%s) dtime(%s) offset(%d) barsize(%d)" % (yymd, hhmm, dtime, offset, barsize))
             continue
 
+        # drop/init db table
+        if par in ['-drop', '-init']:
+            drop = True
+            continue
+
         # datetime
         if par in ['-d', '-ymdhm', '-date', '-dtime']:
             dtime = next(arg)
@@ -662,7 +677,7 @@ if __name__ == '__main__':
             cfgname = next(arg)
             # no channels specified so retrieve all
             if not channels: channels = CHN
-            epg.load(cfgname, yymd, channels)
+            epg.load(cfgname, yymd, channels, drop)
             continue
 
         # channel id
