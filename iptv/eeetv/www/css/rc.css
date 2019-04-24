@@ -114,6 +114,10 @@ button[name="STV4"] {
     background-image: url(/logo/stv4.png);
 }
 
+button[name="Dr. Bukovsky"] {
+    background-image: url(/logo/dr.bukovsky.png);
+}
+
 button[name="Joj"] {
     background-image: url(/logo/joj.png);
 }
@@ -172,6 +176,14 @@ button[name="Film+"] {
 
 button[name="FilmBox"] {
     background-image: url(/logo/filmbox.png);
+}
+
+button[name="FilmBox+"] {
+    background-image: url(/logo/filmbox-plus.png);
+}
+
+button[name="FilmBox Family"] {
+    background-image: url(/logo/filmbox-family.png);
 }
 
 button[name="Kino svet"] {
