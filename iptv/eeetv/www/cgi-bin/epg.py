@@ -14,7 +14,7 @@ import sys
 import json
 import os
 
-__VERSION__ = "2019.04.18"
+__VERSION__ = "2019.04.25"
 
 __ABOUT__ = "= EPG cli module ver. %s for mpv wifi remote contoller =" % (__VERSION__)
 
@@ -32,6 +32,8 @@ CACHE = {
     'filename': '%(dir)s/%(dtime)s-%(key)s.html'
 }
 
+# preconfigured file locations
+#
 __FLOC__ = "= db: %s = cache: %s =" % (DBFILE, CACHE['dir'])
 
 CFG = {
@@ -161,50 +163,71 @@ def dbg(level, msg):
     print "DBG:",msg
 
 
-# NOT USED for now
+# NOT USED right now
 class hdatetime:
     """ human readable date-time format """
 
     # internal format
     _format_ = '%Y%m%d%H%M'
 
-    # internal (integer) value
+    # internal (integer) value in format _format_
     _val_ = None
 
-    def __init__(self, dt, format=None):
-        """ init from date-time string or integer """
-        # string
-        if type(dt) is str or type(dt) is unicode:
-            dtime = datetime.datetime.strptime(dt, self._format_ if format is None else format)
-            self._val_ = int(dtime.strftime(self._format_))
-        # integer
-        if type(dt) is int:
-            self._val_ = dt
+    def __init__(self, format=None):
+        """ init - optional format """
+        if format:
+            self._format_ = format
 
-    @classmethod
-    def from_unixtime(cls, unixtime):
-        """ init from unixtime """
-        sec = datetime.datetime.fromtimestamp(unixtime)
-        dt  = sec.strftime(cls._format_)
-        return cls(dt)
+    def from_datetime(self, dt):
+        """ set value from datetime dt """
+        self._val_ = int(dt.strftime(self._format_))
+        return self
+
+    def from_str(self, str, strformat=None):
+        """ set value from date-time string with optional format strformat """
+        dt = datetime.datetime.strptime(str, strformat if strformat else self._format_)
+        return self.from_datetime(dt)
+
+    def from_int(self, idt, idtformat=None):
+        """ set value from integer dt with optional format idtformat """
+        if idtformat:
+            idt = self.from_str("%s" % idt, idtformat)
+        self._val_ = idt
+        return self
+
+    def from_unixtime(self, unixtime):
+        """ set value from unixtime """
+        dt = datetime.datetime.fromtimestamp(unixtime)
+        return self.from_datetime(dt)
+
+    def to_datetime(self):
+        """ get datetime object """
+        dt = datetime.datetime.strptime("%s" % self._val_, self._format_)
+        return dt
+
+    def to_str(self, format=None):
+        """ get string with optional format """
+        dt = self.to_datetime()
+        str = dt.strftime(format if format else self._format_)
+        return str
+
+    def to_int(self, format=None):
+        """ get integer with optional format """
+        return int(self.to_str(format))
 
     def to_unixtime(self):
-        """ return unixtime """
-        sec = datetime.datetime.strptime(self._val_, self._format_)
+        """ get unixtime """
+        dt = self.to_datetime()
+        sec = int(dt.strftime("%s"))
         return sec
 
-    @classmethod
-    def rectify(cls, ymdhm):
+    def rectify(self, yymdhm):
         """ init from possible invalid format like hours over 24 """
-        dt = datetime.datetime(year=int(ymdhm[:4]), month=int(ymdhm[4:6]), day=int(ymdhm[6:8]))
+        dt = datetime.datetime(year=int(yymdhm[:4]), month=int(yymdhm[4:6]), day=int(yymdhm[6:8]))
         # add time to date
-        dt += datetime.timedelta(hours=int(ymdhm[8:10]), minutes=int(ymdhm[10:12]))
-        # to string -> to int
-        i = int(dt.strftime(cls._format_))
-        return cls(i)
-
-    def val(self):
-        return self._val_
+        dt += datetime.timedelta(hours=int(yymdhm[8:10]), minutes=int(yymdhm[10:12]))
+        #
+        return self.from_datetime(dt)
 
 
 class FileCache:
@@ -450,6 +473,24 @@ class DB:
         )
         self.cur.execute(sql)
 
+    def purge(self, days):
+        """ purge everything older than days """
+        sql_tpl = ('delete from EPG '
+                   'where '
+                   'start_dt < strftime(\'%(format)s\', \'now\', \'-%(days)d days\')'
+                   )
+        # offset = 0:
+        sql_par = {
+            'format': '%Y%m%d0000',
+            'days': int(days)
+        }
+        # construct sql
+        sql = sql_tpl % sql_par
+        #
+        dbg(5, "DB.purge() SQL(%s)" % sql)
+        #
+        self.cur.execute(sql)
+
     def put(self, data):
         sql = ( 'insert or ignore into EPG '
                 '(tvid, start_dt, end_dt, genre, title, year, desc, stars, country) '
@@ -555,6 +596,12 @@ class Epg:
         # a = local_db.get('STV0', '201904101959')
         local_db.close()
 
+    def purge(self, days):
+        """ purge epg entries older than days days """
+        local_db = DB(DBFILE)
+        local_db.purge(days)
+        local_db.close()
+
     def get(self, tvid, dtime, offset=0, barsize=25, format='json'):
         """ get eg for dtime and tvid with offset in format """
         # local database
@@ -566,6 +613,7 @@ class Epg:
             print(json.dumps(epg, ensure_ascii=True, encoding="utf-8"))
         else:
             print(epg)
+        local_db.close()
 
     def get_list(self, tvid, dtime, limit, offset=0, format='json'):
         """ get epg list for tvid starting after time  dtime limit to limit """
@@ -576,6 +624,7 @@ class Epg:
             print(json.dumps(epg, ensure_ascii=True, encoding="utf-8"))
         else:
             print(epg)
+        local_db.close()
 
     def progress_bar(self, start_dt, end_dt, now_dt, sizex=25):
         """ semigraphic progress bar val=0..1 sizex= width in characters """
@@ -594,13 +643,12 @@ class Epg:
         return PROGRESS[1] * n + PROGRESS[0] * (sizex-n)
 
     def remove_dia(self, s):
-        """ remove diactritics """
+        """ remove diacritics """
         #tx = {
         #    'dia':   u'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝßàáâãäåçèéêëìíîïñòóôõöùúûüýÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽž',
         #    'ascii':  'AAAAAACEEEEIIIINOOOOOUUUUYsaaaaaaceeeeiiiinooooouuuuyyAaAaAaCcCcCcCcDdDdEeEeEeEeEeGgGgGgGgHhHhIiIiIiIiIiKkkLlLlLlLlLlNnNnNnNnNOoOoOoRrRrRrSsSsSsSsTtTtTtUuUuUuUuUuUuWwYyYZzZzZz',
         #}
         return ''.join([ c for c in s if ord(c) < 128 ])
-
 
     def title_2_tvid(self, title, casesensitive=False):
         """ channel/playlist title -> epg tvid """
@@ -622,12 +670,14 @@ _usage_ = """
 
 %s [-dbg 10] [-drop] [-tvid STV1] -load cfg-name
 
+%s [-dbg 10] [-purge 7d] [-tvid STV1] -load cfg-name
+
 %s [-dbg 10] -title STV1 [-dtime 201931122355] [-offset -5] [-bar 30] -epg
 
 %s [-dbg 10] -title STV1 [-dtime 201931122355] -epg-list 10
 
 %s
-""" % (__ABOUT__, sys.argv[0], sys.argv[0], sys.argv[0],  __FLOC__)
+""" % (__ABOUT__, sys.argv[0], sys.argv[0], sys.argv[0], sys.argv[0],   __FLOC__)
 
 def usage():
     """ show usage """
@@ -657,6 +707,14 @@ if __name__ == '__main__':
         if par in ['-dbg', '-debug', '-v', '-verbose']:
             DBG = int(next(arg))
             dbg(5, "VAR: DEFAULTS yymd(%s) hhmm(%s) dtime(%s) offset(%d) barsize(%d)" % (yymd, hhmm, dtime, offset, barsize))
+            continue
+
+        # purge old data from db
+        if par in ['-p', '-purge']:
+            # extract only number from next parameter like: -7 days, 7d, ...
+            days = re.findall('\d+', next(arg))[0]
+            dbg(5, "VAR: days(%s)" % days)
+            epg.purge(days)
             continue
 
         # drop/init db table
