@@ -176,14 +176,6 @@
                                 // {"data":"Wau,,0","error":"success"}
                                 var title = $.parseJSON(data).data.replace(/,,0$/, '');
 
-                                // eject old pressed button
-                                //
-                                //$(".buttondown").removeClass("buttondown");
-
-                                // press button with active channel
-                                //
-                                //$("button[name='"+ title +"']").addClass("buttondown");
-
                                 simulate_press_eject($("button[name='"+ title +"']"), true, 0);
 
                             } catch(e) {
@@ -221,14 +213,6 @@
                 //
                 if ($(this).hasClass("radio")) {
 
-                    // eject old pressed button
-                    //
-                    //$(".buttondown").removeClass("buttondown");
-
-                    // simulate press
-                    //
-                    //$(this).addClass("buttondown");
-
                     simulate_press_eject($(this), true, 0);
 
                     // channel switching
@@ -245,14 +229,6 @@
                 // single functionality button (not channel switching)
                 //
                 else if ($(this).hasClass("single")) {
-
-                    // simulate press
-                    //
-                    //$(this).addClass("buttondown");
-
-                    // 2s delayed release
-                    //
-                    //setTimeout(function() { $(this).removeClass("buttondown");}.bind(this), 2000);
 
                     simulate_press_eject($(this), false, 2000);
 
@@ -520,7 +496,7 @@
         <button class="button radio" name="Pervyj 1"></button>
         <button class="button radio" name="Rossia 1"></button>
         <button class="button radio" name="Rossia 24"></button>
-        <button class="button radio" name="Ruptly HoC"></button>
+        <button class="button radio" name="Ruptly"></button>
     <br>
         <button class="button radio" name="RT News"></button>
         <button class="button radio" name="RT News USA"></button>
