@@ -240,7 +240,6 @@ class FileCache:
         self.filename = cfg.get('filename', '%(dtime)s-%(key)s.html')
         self.dtime = dtime
         self.text = None
-        #
 
     def makedir(self, dir):
         """ try to make storage directory """
@@ -273,13 +272,17 @@ class FileCache:
             dbg(4, 'cache.load(key=%s) missing file:%s' % (key, path))
             self.text = None
 
-    def remove(self, key='*'):
+    def remove(self, key='*', dtime=None):
         """ clear all matching keys """
-        path = self.filename % {'dir': self.dir, 'dtime': self.dtime, 'key': key}
+        path = self.filename % {'dir': self.dir, 'dtime': dtime if dtime else self.dtime, 'key': key}
         if os.path.exists(path):
             os.unlink(path)
             dbg(4, 'cache.remove(key=%s) ok file:%s' % (key, path))
         return self
+
+    def purge(self, days):
+        """ remove all entries older than days days """
+        pass
 
 
 class ScrapWWW:
@@ -408,7 +411,7 @@ class ScrapWWW:
             tvid, _ = k.split('_')
             # details
             detail_stars, detail_year, detail_country, detail_desc = '', '', '', ''
-            for txt in detail[k].split('<BR>'):
+            for txt in detail.get(k, '').split('<BR>'):
                 m = re.match('Hrajú:(.+)', txt)
                 if m:
                     detail_stars = m.group(1).strip()
@@ -537,8 +540,7 @@ class DB:
         #
         self.cur.execute(sql, data)
         r = self.cur.fetchone()
-        #return dict( [ (self.cur.description[i][0], v) for i,v in enumerate(r) ] ) if r else {}
-        return dict(r)
+        return dict(r) if r else {}
 
     def get_list(self, tvid, dtime, limit, offset=0):
         sql = ( 'select tvid, start_dt, title from EPG '
@@ -608,7 +610,8 @@ class Epg:
         local_db = DB(DBFILE)
         epg = local_db.get(tvid, dtime, offset)
         # add progress bar
-        if epg: epg['bar'] = self.progress_bar(epg['start_dt'], epg['end_dt'], dtime, barsize)
+        if epg:
+            epg['bar'] = self.progress_bar(epg['start_dt'], epg['end_dt'], dtime, barsize)
         if format == 'json':
             print(json.dumps(epg, ensure_ascii=True, encoding="utf-8"))
         else:
