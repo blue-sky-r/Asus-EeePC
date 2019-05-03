@@ -2,7 +2,7 @@
 
 # version tag
 #
-VER="2019.04.15"
+VER="2019.05.02"
 
 # debug output to the caller (will show as pop-up alert)
 #
@@ -18,6 +18,18 @@ function json
 {
     local key=$1
     python -c "import sys, json; print json.load(sys.stdin).get($key)"
+}
+
+# refresh playlist with fresh auth tokens/urls
+#
+function refresh_tokens
+{
+    local token=$1
+    local playlist="tv.m3u8"
+    local playenv=${playlist/.m3u8/-env.m3u8}
+    local bin="./bin"
+
+    $bin/envsubst_playlist.sh "$playlist" "$playenv"
 }
 
 # split by &
@@ -50,7 +62,8 @@ for keyval in ${QUERY_STRING//&/ }
 case $CMD in
 
     # channel=cnn
-    channel)	r=$( echo "script-message-to channel_by_name channel \"$channel\"" | socat - /tmp/mpvsocket )
+    channel)	#
+                r=$( echo "script-message-to channel_by_name channel \"$channel\"" | socat - /tmp/mpvsocket )
                 ;;
 
     # survey-range-playlist=playlist & start=name & end=name [& osd=message]
@@ -78,7 +91,7 @@ case $CMD in
                 # get control code for disabling escaping ass sequences
     	        esc0=$( echo '{ "command": ["get_property", "osd-ass-cc/0"] }' | socat - /tmp/mpvsocket | awk -F'"' '/data/ {printf "%s",$4}' )
     	        #esc0='\xfd'
-                # execute show-text and esacpe double-quotes in text
+                # execute show-text and escape double-quotes in text
                 r=$( echo "show-text \"${esc0}${show_text_ass_cc//\"/\\\"}\" ${time}"| socat - /tmp/mpvsocket )
                 #r=$( echo "{ \"command\": [\"show-text\", \"${esc0}${show_text_ass_cc//\"/\\\"}\", ${time}] }" | socat - /tmp/mpvsocket )
                 ;;
@@ -111,8 +124,9 @@ case $CMD in
                 echo "$json"
                 ;;
 
-    # get program
-    get-epg-list)   json=$( ./epg.py -title "${channel}" -offset ${offset} -epg-list ${get_epg_list} )
+    # get program list
+    get-epg-list)
+                json=$( ./epg.py -title "${channel}" -offset ${offset} -epg-list ${get_epg_list} )
                 # output
                 echo "$json"
                 ;;
@@ -127,6 +141,23 @@ case $CMD in
                 json=$( echo '{ "command": ["get_property", "'${get_property}'"] }' | socat - /tmp/mpvsocket )
                 # output json
                 echo "$json"
+                ;;
+
+    # refresh auth tokens/utls in playlist
+    playlist)
+                case $playlist in
+
+                reload)
+                    refresh_tokens
+                    # loadlist <playlist> [replace|append] - not required ?
+                    r=$( echo '{ "command": ["loadlist", "tv-env.m3u8", "replace"] }' | socat - /tmp/mpvsocket )
+                    ;;
+
+                playlist-prev | playlist-next)
+                    r=$( echo '{ "command": ["'${playlist}'"] }' | socat - /tmp/mpvsocket )
+                    ;;
+
+                esac
                 ;;
 
     *)		    echo "unrecognized command:$CMD - query:$QUERY_STRING"
