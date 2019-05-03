@@ -19,7 +19,7 @@
             if (/iphone/i.test(navigator.userAgent.toLowerCase()))
                 $("meta[name='viewport']").attr("content", "width=640, initial-scale=0.59, minimum-scale=0.59, maximum-scale=0.59");
         </script>
-        <meta name="version"  content="2019.04.17">
+        <meta name="version" content="2019.05.02">
     <script>
         $(document).ready(function(){
 
@@ -155,6 +155,8 @@
             };
 
             function simulate_press_eject(button, eject, delayup) {
+
+                console.log('simulate_press_eject(buton='+button.attr('name')+', eject='+eject+', delayup='+delayup);
 
                 // eject currently pressed button
                 //
@@ -340,6 +342,24 @@
                             )
                         }
                     }
+                    else if (name == "playlist") {
+
+                        // playlist command
+                        var command = $(this).data("command")
+
+                        $.get( "/cgi-bin/tv.cgi",
+                                {
+                                    "playlist":     command
+                                },
+                                alert_dbg,
+                                "text"
+                        );
+
+                        // as the channel has been changed update button pressed after short delay
+                        //
+                        setTimeout(function() { press_button_with_active_channel(); }, 1000);
+
+                    }
                     else if (name == "program-list") {
 
                         // button pressed = active channel
@@ -431,6 +451,13 @@
         <button class="button radio" name="Info Vojna"></button>
         <button class="button radio" name="Radio Info Vojna"></button>
 
+    <h4><span>kanál</span></h4>
+        <p align="center">
+        <button class="button textbutton single" name="playlist" data-command="playlist-prev">< -1</button>
+        <button class="button textbutton single" name="playlist" data-command="reload">TV</button>
+        <button class="button textbutton single" name="playlist" data-command="playlist-next">+1 ></button>
+        </p>
+
     <h4><span>české kanály</span></h4>
 
         <button class="button radio" name="ČT1"></button>
@@ -473,6 +500,9 @@
         <button class="button radio" name="TV Paprika"></button>
         <button class="button radio" name="Fashion TV"></button>
         <button class="button radio" name="Elektrik TV"></button>
+        <br>
+        <button class="button radio" name="Praha TV"></button>
+        <button class="button radio" name="TV Natura"></button>
         <br>
         <button class="button radio" name="Očko Gold"></button>
         <button class="button radio" name="Retro"></button>
@@ -521,6 +551,8 @@
         <button class="button radio" name="ABC"></button>
         <button class="button radio" name="ABC News"></button>
         <button class="button radio" name="CBC news"></button>
+        <button class="button radio" name="Toronto 360"></button>
+    <br>
         <button class="button radio" name="InfoWars.com"></button>
 
     <h4><span>test</span></h4>
