@@ -27,9 +27,10 @@ function refresh_tokens
     local token=$1
     local playlist="tv.m3u8"
     local playenv=${playlist/.m3u8/-env.m3u8}
-    local bin="./bin"
+    local bin="bin"
+    local dir="$bin/.."
 
-    $bin/envsubst_playlist.sh "$playlist" "$playenv"
+    $bin/envsubst-playlist.sh "$dir/$playlist" "$dir/$playenv"
 }
 
 # split by &
@@ -62,7 +63,13 @@ for keyval in ${QUERY_STRING//&/ }
 case $CMD in
 
     # channel=cnn
-    channel)	#
+    channel)	# refresh auth tokens only for specific channels
+                if [[ $channel =~ STV2|STV3|STV4|DAJTO|DOMA ]]
+                then
+                    refresh_tokens
+                    # loadlist <playlist> [replace|append] - not required ?
+                    r=$( echo '{ "command": ["loadlist", "tv-env.m3u8", "replace"] }' | socat - /tmp/mpvsocket )
+                fi
                 r=$( echo "script-message-to channel_by_name channel \"$channel\"" | socat - /tmp/mpvsocket )
                 ;;
 
