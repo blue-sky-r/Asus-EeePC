@@ -7,15 +7,15 @@ VERSION="2019.05.01"
 SRC_M3U8=$1
 DST_M3U8=$2
 
-# optional tag for logger
+# optional tag for logger (epmty = no logging)
 #
 LOGT="envsubst-playlist"
 
-# only update if older than (empty = akways update)
+# only update if older than (empty = always update)
 #
-OLDER='now - 2 hours'
+OLDER='now - 1 hour - 35 mins'
 
-# debug
+# debug (print log messages to stdout)
 #
 DBG=
 
@@ -27,16 +27,24 @@ result.m3u8 ... m3u8 playlist with expanded variables
 
 """ && exit 1
 
-# do not update if result playlist is newer then limit $OLDER
+# debug or logger output
 #
-if [ -n "$OLDER" ]
+function msg()
+{
+    [   $DBG ] && echo -e "$LOGT $1"
+    [ ! $DBG ] && [ -n "$LOGT" ] && logger -t "$LOGT" "$1"
+}
+
+# $OLDER condition provided and dst playlist exists and has size>0
+#
+if [ -n "$OLDER" -a -n "$DST_M3U8" -a -s "$DST_M3U8" ]
 then
         playlist_time=$(date -r "$DST_M3U8" +%s)
         limit=$(date -d "$OLDER" +%s)
-        # is playlist newer than limit ?
+        # exit if result playlist is newer then limit $OLDER
         if [ $playlist_time -gt $limit ]
         then
-            [ -n "$LOGT" ] && logger -t "$LOGT" "Playlist($DST_M3U8) not older than $OLDER, skipping update"
+            msg "playlist [ $(ls -l $DST_M3U8) ] not older than [ $OLDER ], skipping update"
             exit 1
         fi
 fi
@@ -47,28 +55,25 @@ DIR=${0%/*}
 source "$DIR/get_auth_tokens.sh" "USTVGO TA3 STVx DOMA DAJTO HRONKA INFOVOJNA"
 #source "$DIR/get_auth_tokens.sh" "USTVGO TA3 STVx HRONKA INFOVOJNA"
 
-[ $DBG ] && echo -e " AUTH_USTVGO: $AUTH_USTVGO \n AUTH_TA3: $AUTH_TA3 \n STV1: $HTTP_STV1 \n" \
-         && echo -e " DAJTO: $HTTP_DAJTO \n DOMA: $HTTP_DOMA \n MARKIZA: $HTTP_MARKIZA \n" \
-         && echo -e " HRONKA: $HTTP_HRONKA \n INFOVOJNA: $HTTP_INFOVOJNA \n"
-
-# log
+# dbg or log
 #
-if [ -n "$LOGT" ]
-then
-    logger -t "$LOGT" "UPDATE playlist($DST_M3U8) envsubst-playlist version $VERSION"
-    logger -t "$LOGT" "AUTH_USTVGO: $AUTH_USTVGO"
-    logger -t "$LOGT" "AUTH_TA3: $AUTH_TA3"
-    logger -t "$LOGT" "HTTP_STV1: $HTTP_STV1"
-    logger -t "$LOGT" "HTTP_DAJTO: $HTTP_DAJTO"
-    logger -t "$LOGT" "HTTP_DOMA: $HTTP_DOMA"
-    logger -t "$LOGT" "HTTP_MARKIZA: $HTTP_MARKIZA"
-    logger -t "$LOGT" "HTTP_HRONKA: $HTTP_HRONKA"
-    logger -t "$LOGT" "HTTP_INFOVOJNA: $HTTP_INFOVOJNA"
-fi
+msg "ver. $VERSION - updating playlist: $DST_M3U8"
+msg "AUTH_USTVGO: $AUTH_USTVGO"
+msg "AUTH_TA3: $AUTH_TA3"
+msg "HTTP_STV1: $HTTP_STV1"
+msg "HTTP_DAJTO: $HTTP_DAJTO"
+msg "HTTP_DOMA: $HTTP_DOMA"
+msg "HTTP_MARKIZA: $HTTP_MARKIZA"
+msg "HTTP_HRONKA: $HTTP_HRONKA"
+msg "HTTP_INFOVOJNA: $HTTP_INFOVOJNA"
 
-if [ $DST_M3U8 ]
+# if destinaton requested create dst file, otherwise output to stdout
+#
+if [ -n "$DST_M3U8" ]
 then
     envsubst < "$SRC_M3U8" > "$DST_M3U8"
+    msg "updated [ $(ls -l $DST_M3U8) ]"
 else
     envsubst < "$SRC_M3U8"
 fi
+
