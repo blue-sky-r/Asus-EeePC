@@ -2,7 +2,7 @@
 
 # version tag
 #
-VER="2019.05.02"
+VER="2019.05.05"
 
 # debug output to the caller (will show as pop-up alert)
 #
@@ -25,12 +25,12 @@ function json
 function refresh_tokens
 {
     local token=$1
-    local playlist="tv.m3u8"
-    local playenv=${playlist/.m3u8/-env.m3u8}
+    local plist="tv.m3u8"
+    local plenv=${plist/.m3u8/-env.m3u8}
     local bin="bin"
     local dir="$bin/.."
 
-    $bin/envsubst-playlist.sh "$dir/$playlist" "$dir/$playenv"
+    $bin/envsubst-playlist.sh "$dir/$plist" "$dir/$plenv"
 }
 
 # split by &
