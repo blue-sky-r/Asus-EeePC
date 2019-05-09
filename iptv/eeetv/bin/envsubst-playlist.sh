@@ -2,10 +2,11 @@
 
 # evaluate environment variables in playlist
 #
-VERSION="2019.05.01"
+VERSION="2019.05.09"
 
 SRC_M3U8=$1
 DST_M3U8=$2
+FORCE_EVAL=$3
 
 # optional tag for logger (epmty = no logging)
 #
@@ -20,10 +21,11 @@ OLDER='now - 1 hour - 35 mins'
 DBG=
 
 [ $# -lt 1 ] && cat <<< """
-usage: $0 source.m3u8 [result.m3u8]
+usage: $0 source.m3u8 [result.m3u8 [force]]
 
 source.m3u8 ... m3u8 playlist with variables
 result.m3u8 ... m3u8 playlist with expanded variables
+force       ... any string will force env.subst (default no, only if older than '$OLDER')
 
 """ && exit 1
 
@@ -35,14 +37,18 @@ function msg()
     [ ! $DBG ] && [ -n "$LOGT" ] && logger -t "$LOGT" "$1"
 }
 
+# startup msg - show parameters
+#
+msg "ver. $VERSION - src($SRC_M3U8) dst($DST_M3U8) force($FORCE_EVAL)"
+
 # $OLDER condition provided and dst playlist exists and has size>0
 #
 if [ -n "$OLDER" -a -n "$DST_M3U8" -a -s "$DST_M3U8" ]
 then
         playlist_time=$(date -r "$DST_M3U8" +%s)
         limit=$(date -d "$OLDER" +%s)
-        # exit if result playlist is newer then limit $OLDER
-        if [ $playlist_time -gt $limit ]
+        # exit if result playlist is newer then limit $OLDER and force_eval not requested
+        if [ $playlist_time -gt $limit -a -z "$FORCE_EVAL" ]
         then
             msg "playlist [ $(ls -l $DST_M3U8) ] not older than [ $OLDER ], skipping update"
             exit 1
@@ -57,7 +63,6 @@ source "$DIR/get_auth_tokens.sh" "USTVGO TA3 STVx DOMA DAJTO HRONKA INFOVOJNA"
 
 # dbg or log
 #
-msg "ver. $VERSION - updating playlist: $DST_M3U8"
 msg "AUTH_USTVGO: $AUTH_USTVGO"
 msg "AUTH_TA3: $AUTH_TA3"
 msg "HTTP_STV1: $HTTP_STV1"
