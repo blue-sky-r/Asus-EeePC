@@ -64,7 +64,7 @@ source "$DIR/get_auth_tokens.sh" "USTVGO TA3 STVx DOMA DAJTO HRONKA INFOVOJNA"
 # dbg or log
 #
 msg "AUTH_USTVGO: $AUTH_USTVGO"
-msg "AUTH_TA3: $AUTH_TA3"
+msg "HTTP_TA3: $HTTP_TA3"
 msg "HTTP_STV1: $HTTP_STV1"
 msg "HTTP_DAJTO: $HTTP_DAJTO"
 msg "HTTP_DOMA: $HTTP_DOMA"
