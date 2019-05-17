@@ -2,7 +2,7 @@
 
 # version tag
 #
-VER="2019.05.05"
+VER="2019.05.10"
 
 # debug output to the caller (will show as pop-up alert)
 #
@@ -24,13 +24,13 @@ function json
 #
 function refresh_tokens
 {
-    local token=$1
+    local force=$1
     local plist="tv.m3u8"
     local plenv=${plist/.m3u8/-env.m3u8}
     local bin="bin"
     local dir="$bin/.."
 
-    $bin/envsubst-playlist.sh "$dir/$plist" "$dir/$plenv"
+    $bin/envsubst-playlist.sh "$dir/$plist" "$dir/$plenv" "$force"
 }
 
 # split by &
@@ -64,7 +64,7 @@ case $CMD in
 
     # channel=cnn
     channel)	# refresh auth tokens only for specific channels
-                if [[ $channel =~ STV2|STV3|STV4|DAJTO|DOMA ]]
+                if [[ $channel =~ STV1|STV2|STV3|STV4|DAJTO|DOMA ]]
                 then
                     refresh_tokens
                     # loadlist <playlist> [replace|append] - not required ?
@@ -155,7 +155,7 @@ case $CMD in
                 case $playlist in
 
                 reload)
-                    refresh_tokens
+                    refresh_tokens "force"
                     # loadlist <playlist> [replace|append] - not required ?
                     r=$( echo '{ "command": ["loadlist", "tv-env.m3u8", "replace"] }' | socat - /tmp/mpvsocket )
                     ;;
