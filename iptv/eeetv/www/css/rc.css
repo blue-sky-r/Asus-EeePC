@@ -278,6 +278,22 @@ button[name="HBO 2"] {
     background-image: url(/logo/hbo2.png);
 }
 
+button[name="HBO 3"] {
+    background-image: url(/logo/hbo3.png);
+}
+
+button[name="AXN"] {
+    background-image: url(/logo/axn.png);
+}
+
+button[name="AXN White"] {
+    background-image: url(/logo/axn-white.png);
+}
+
+button[name="AXN Black"] {
+    background-image: url(/logo/axn-black.png);
+}
+
 button[name="Očko Gold"] {
     background-image: url(/logo/ocko.png);
 }
@@ -290,12 +306,24 @@ button[name="Mall TV"] {
     background-image: url(/logo/mall-tv.png);
 }
 
+button[name="Praha TV"] {
+    background-image: url(/logo/praha_tv.png);
+}
+
+button[name="TV Natura"] {
+    background-image: url(/logo/tv-natura.png);
+}
+
 button[name="Info Vojna"] {
     background-image: url(/logo/infovojna.png);
 }
 
 button[name="Radio Info Vojna"] {
     background-image: url(/logo/infovojna-radio.png);
+}
+
+button[name="Ceskoslovensko"] {
+    background-image: url(/logo/ceskoslovensko.png);
 }
 
 button[name="Retro"] {
@@ -364,6 +392,10 @@ button[name="Kaleidoskop RU"] {
 
 button[name="Hit Music"] {
     background-image: url(/logo/hit-music.png);
+}
+
+button[name="Toronto 360"] {
+    background-image: url(/logo/to-360.png);
 }
 
 button[name="Fox News"] {
