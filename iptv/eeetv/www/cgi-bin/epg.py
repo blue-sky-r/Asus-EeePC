@@ -126,8 +126,8 @@ TITLE2TVID = {
     'Retro': 'RETRO',
     # zatial neaktivne
     'AXN': 'AXN',
-    'AXN W': 'AXNCRIME',
-    'AXN B': 'AXNSCIFI',
+    'AXN White': 'AXNCRIME',
+    'AXN Black': 'AXNSCIFI',
     'Brdv.Family': 'BARRANDOVFAMILY',
     'Brdv+': 'BARRANDOVPLUS',
     'Brdv. Kino': 'KINOBARRANDOV',
