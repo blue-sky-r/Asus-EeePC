@@ -10,7 +10,7 @@
 
 3) install lubuntu:
   - select language, country, keyboard layout based on your preferences
-  - wait untim intalled loads comp[onents (cca 2 min)
+  - wait until intaller loads components (cca 2 min)
   - configure the network
   - hostname, user, do not encrypt home directory
   - Partition disks:
@@ -22,7 +22,7 @@
     - create a new partition
     - leave maximum size
     - type primary
-    - use as Ext2 file system
+    - use as Ext2/Ext4 file system
     - yes, format it
     - Mount point: / (root filesystem)
     - Mount options: noatime, nodiratime
@@ -30,7 +30,7 @@
     - Reserved blocks: 5%
     - Typical usage: standard
     - Bootable flag: on
-    - Done stting up the partition
+    - Done setting up the partition
   - Finish partitioning and write changes to disk
   - NO to select swap space and 'Do you want to return to the partitioning menu'
   - YES Write the changes to disk
@@ -48,15 +48,15 @@
    - wifi: sudo bin/wifi.sh 'ssid' 'password'
    - switch-on wifi (Fn+F2),
    - reboot (service networking restart nepomohlo)
-   - install: sudo bin/install.sh
+   - install: sudo bin/install.sh (None/None for IR receiver/transmitter)
    - sudo bin/autologin.sh tv
    - copy tv.tgz, unpack
    - sudo bin/autostart-tv.sh
    - sudo bin/nodialog-shutdown.sh
-   - sudo cp 85-ac-adapter.rules /etc/udev/rules.d/
+   - sudo cp etc/udev/rules.d/85-ac-adapter.rules /etc/udev/rules.d/
 
 6) RC
-   - 
+   - make and connect IR receiver to audio input jack
 
 
 
