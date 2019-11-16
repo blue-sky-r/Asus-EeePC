@@ -19,7 +19,7 @@
             if (/iphone/i.test(navigator.userAgent.toLowerCase()))
                 $("meta[name='viewport']").attr("content", "width=640, initial-scale=0.59, minimum-scale=0.59, maximum-scale=0.59");
         </script>
-        <meta name="version" content="2019.05.02">
+        <meta name="version" content="2019.11.16">
     <script>
         $(document).ready(function(){
 
@@ -102,7 +102,7 @@
                     var esc = "\\\\";
                     if (Array.isArray(tag)) {
                         var result = "";
-                        tag.forEach(function(item) { result += "{" + esc + item + "}" })
+                        tag.forEach(function(item) { result += "{" + esc + item + "}" });
                         return result;
                     }
                     return "{" + esc + tag + "}";
@@ -355,9 +355,10 @@
                                 "text"
                         );
 
-                        // as the channel has been changed update button pressed after short delay
+                        // as the channel has been changed update button pressed after short delay (except restart via ESC)
                         //
-                        setTimeout(function() { press_button_with_active_channel(); }, 1000);
+                        if (command != "esc")
+                            setTimeout(function() { press_button_with_active_channel(); }, 1000);
 
                     }
                     else if (name == "program-list") {
@@ -453,9 +454,10 @@
 
     <h4><span>kanál</span></h4>
         <p align="center">
-        <button class="button textbutton single" name="playlist" data-command="playlist-prev">< -1</button>
-        <button class="button textbutton single" name="playlist" data-command="reload">TV</button>
-        <button class="button textbutton single" name="playlist" data-command="playlist-next">+1 ></button>
+            <button class="button textbutton single" name="playlist" data-command="esc">ESC</button>
+            <button class="button textbutton single" name="playlist" data-command="playlist-prev">< -1</button>
+            <button class="button textbutton single" name="playlist" data-command="reload">TV</button>
+            <button class="button textbutton single" name="playlist" data-command="playlist-next">+1 ></button>
         </p>
 
     <h4><span>české kanály</span></h4>
