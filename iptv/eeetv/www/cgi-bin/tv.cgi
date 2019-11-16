@@ -2,7 +2,7 @@
 
 # version tag
 #
-VER="2019.05.10"
+VER="2019.11.16"
 
 # debug output to the caller (will show as pop-up alert)
 #
@@ -64,7 +64,7 @@ case $CMD in
 
     # channel=cnn
     channel)	# refresh auth tokens only for specific channels
-                if [[ $channel =~ STV1|STV2|STV3|STV4|DAJTO|DOMA ]]
+                if [[ $channel =~ STV1|STV2|STV3|STV4|DAJTO|DOMA|MARKÍZA ]]
                 then
                     refresh_tokens
                     # loadlist <playlist> [replace|append] - not required ?
@@ -162,6 +162,19 @@ case $CMD in
 
                 playlist-prev | playlist-next)
                     r=$( echo '{ "command": ["'${playlist}'"] }' | socat - /tmp/mpvsocket )
+                    ;;
+
+                esc)
+                    # save current position
+                    property='playlist-pos-1'
+                    # {"data":1,"request_id":0,"error":"success"}
+                    pos1=$( echo '{ "command": ["get_property", "'${property}'"] }' | socat - /tmp/mpvsocket | awk -F:\|, '{print $2}')
+                    # no response as mpv will quit
+                    echo "keypress ESC" | socat - /tmp/mpvsocket
+                    # wait for mpv restart
+                    sleep 2
+                    # restore position
+                    echo '{ "command": ["set_property", "'${property}'", '${pos1}'] }' | socat - /tmp/mpvsocket
                     ;;
 
                 esac
